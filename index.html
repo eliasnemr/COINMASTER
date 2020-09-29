@@ -40,6 +40,13 @@
         // get tokens of user
         function setBalance(tmpl, tokens) {
 
+            $(document).ready(function(){
+                if($('#templTokens').length > 0){
+                    $('#templTokens').remove();
+                    tokens = [];
+                }
+            });
+
             Minima.cmd("balance", function(res){
                 res.response.balance.forEach(function(tkn){
                     
@@ -73,7 +80,7 @@
             if(msg.event == 'connected'){
                 setBalance(tmpl, tokens); // get tokens of user
             } else if(msg.event == 'newbalance') {
-                setBalance(tmpl, tokens);
+                setBalance(tmpl, tokens);    
             }
         });
     </script>
@@ -84,6 +91,10 @@
         </a>
         <h5>Coin Master</h5>
     </nav>
+
+    <div class="alert alert-light" role="alert">
+        Choose a token to view its coins...
+    </div>
 
     <div class="container pt-5">
 

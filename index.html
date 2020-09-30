@@ -11,10 +11,10 @@
 </head>
 <body>
     <script id="templateTokens" type="text/x-jsrender">
-    <div id="templTokens" class="container tokens"> 
+    <div id="templTokens" class="tokens"> 
         <div class="row">
             {{for tokens}}
-            <div class="col-sm">
+            <div class="col">
                 <div onclick="getToken('{{:tokenid}}')" class="box border rounded-lg">
                     {{if icon}}
                     <img src="{{:icon}}" class="img-fluid">
@@ -27,10 +27,43 @@
             {{/for}}
         </div>
     </div>
-
     </script>
 
     <script>
+        function setTokenAmount() {
+            Minima.cmd('balance', function(res){
+                
+                var total = res.response.balance.length;
+                if(total > 1) {
+                    document.getElementById('token-amount').innerText = "You currently have "+total+" tokens.";
+                } else if(token == 1) {
+                    document.getElementById('token-amount').innerText = "You currently have "+total+" token.";
+                } else {
+                    document.getElementById('token-amount').innerText = "Loading...";
+                }
+
+
+            });
+        }
+        function setTotalTokens() {
+            Minima.cmd('balance', function(res) {
+                var totalT = 0;
+                var totalMini = 0;
+                var yourMini = 0;
+                res.response.balance.forEach(token => {
+                    if(token.tokenid !== '0x00') {
+                        totalT = totalT + parseFloat(token.total);
+                    } else if(token.tokenid == '0x00') {
+                        totalMini = parseInt(token.total);
+                        yourMini = parseInt(token.confirmed);
+                    }
+                });
+
+                document.getElementById('token-total').innerText = "Your custom tokens all add up to "+totalT +" tokens.";
+                document.getElementById('minima-total').innerText = "There is a cap of "+totalMini +" MINI tokens and you own "+yourMini+" MINI.";
+
+            });
+        }
         function getToken(id) {
             window.location.href="./aggregate.html?token="+id;
         }
@@ -75,14 +108,28 @@
 
             });
         }
+        window.addEventListener("load", function(res){
+            Minima.init(function(msg) {
+                if(msg.event == 'connected'){
+                    setBalance(tmpl, tokens); // get tokens of user
+                    setTokenAmount();
+                    setTotalTokens()
 
-        Minima.init(function(msg) {
-            if(msg.event == 'connected'){
-                setBalance(tmpl, tokens); // get tokens of user
-            } else if(msg.event == 'newbalance') {
-                setBalance(tmpl, tokens);    
-            }
-        });
+                } else if(msg.event == 'newbalance') {
+                    setBalance(tmpl, tokens);    
+                    setTokenAmount();
+                    setTotalTokens()
+                } else if(msg.event == 'miningstart') {
+                    $('#toast-start').toast('show');
+                } else if(msg.event == 'miningstop') {
+                    $('#toast-start').toast('hide');
+                    $('#toast-stop').toast('show');
+
+
+                    
+                }
+            });
+    });
     </script>
 
     <nav class="navbar navbar-light bg-light">
@@ -96,11 +143,75 @@
         Choose a token to view its coins...
     </div>
 
+    <div style="position: relative;">
+        <div class="toast" id="toast-start" data-autohide="false" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+            <img src="./assets/coin.svg" class="rounded mr-2" alt="coinmaster" style="width: 25px; height: 20px;">
+            <strong class="mr-auto">Minima</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="toast-body">
+            Mining started..
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;">
+        <div class="toast" id="toast-stop" data-autohide="false" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+            <img src="./assets/coin.svg" class="rounded mr-2" alt="coinmaster" style="width: 25px; height: 20px;">
+            <strong class="mr-auto">Minima</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="toast-body">
+            Mining stopped..
+            </div>
+        </div>
+    </div>
+
     <div class="container pt-5">
 
         <div id="jumbo" class="jumbotron"><h2>Your Tokens</h2></div>
 
     </div>
+
+    <div class="container pt-5">
+
+        <div id="jumbo2" class="jumbotron">
+            <h2>Stats</h2>
+        
+            <div class="row d-flex justify-content-around">
+                <div class="card" style="width: 18rem;">
+                    <img src="./assets/tokens.svg" class="card-img-top" alt="tokens">
+                    <div class="card-body">
+                      <h5 class="card-title">Tokens</h5>
+                      <p class="card-text" id="token-amount"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 18rem;">
+                    <img src="./assets/icon.png" class="card-img-top" alt="minima">
+                    <div class="card-body">
+                      <h5 class="card-title">Minima Token</h5>
+                      <p class="card-text" id="minima-total"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 18rem;">
+                    <img src="./assets/balance.svg" class="card-img-top" alt="balance">
+                    <div class="card-body">
+                      <h5 class="card-title">Token Total</h5>
+                      <p class="card-text" id="token-total"></p>
+                    </div>
+                  </div>
+            
+            </div>
+
+        </div>
+
+    </div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

@@ -67,7 +67,7 @@ var Minima = {
 	debug : true,
 	
 	//Show mining messages
-	showmining : true,
+	showmining : false,
 	
 	/**
 	 * Minima Startup - with the callback function used for all Minima messages

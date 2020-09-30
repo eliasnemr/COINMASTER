@@ -1,3 +1,6 @@
+body {
+    background-color: rgba(242, 242, 242, 1.0) !important;
+}
 .box {
     display: flex;
     flex-direction: column;
@@ -11,6 +14,8 @@
     transition: transform .2s;
     margin-bottom: 5px;
     background: rgba(194,189,189, 0.2);
+    border: 2.5px solid rgb(191,218,246) !important;
+
 }
 .box h5 {
     font-size: 0.8rem;
@@ -27,11 +32,14 @@
 }
 .jumbotron h2 {
     letter-spacing: -0.02em;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    color: rgba(242, 242, 242, 0.7) !important;
+
 }
 .box:hover {
     cursor: pointer;
-    background: #f2f2f2;
+    background-color: rgba(77, 166, 255, 0.4) !important;
+
     transform: scale(1.1);
 }
 .list-group-item {
@@ -45,4 +53,56 @@
 form {
     display: flex;
     flex-direction: column;
+}
+.navbar h5 {
+    opacity: 0.4;
+    letter-spacing: -0.02em;
+    font-size: 1.5rem;
+}
+.jumbotron {
+    background-color: rgba(77, 166, 255, 0.7) !important;
+}
+.navbar {
+    background-color: rgba(77, 166, 255, 0.7) !important;
+}
+
+.card-img-top {
+    width: 90px;
+    border-bottom: 2.5px solid rgb(129,190,251) !important;
+    
+}
+.card {
+    background-color: rgba(242, 242, 242, 1.0) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.card-text {
+    font-weight: 300;
+    opacity: 0.5;
+}
+.input-group-text {
+    background-color: rgb(252,252,216) !important;
+}
+.card-title {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.alert h2 {
+    font-size: 1.2rem;
+}
+.modal-header {
+    background-color: rgba(242, 242, 242, 1.0) !important;
+}
+.modal-header h2 {
+    font-size: 1.1rem;
+}
+.modal-body {
+    font-size: 0.9rem !important;
+    background-color: rgba(242, 242, 242, 0.8) !important;
+
+}
+.modal {
+    background: rgba(242,242,242, 0.6);
 }

@@ -10,7 +10,11 @@
     <title>COIN MASTER</title>
 </head>
 <body>
-
+<script>
+    function finish() {
+        window.location.href = "./";
+    }
+</script>
 <script id="templateCoins" type="text/x-jsrender">
     <div id="templCoins" class="list-group">
         {{for coins}}
@@ -72,14 +76,20 @@ $(document).ready(function(){
 
         } else if(msg.event == 'newbalance') {
             var tokenId = Minima.form.getParams("token");
+            $('.toast').toast();
+            
             getCoins(tokenId);
+        } else if(msg.event == 'miningstart') {
+            $('.toast').toast('show');
+        } else if(msg.event == 'miningstop') {
+            $('.toast').toast('show');
         }
     });
 });
 
 </script>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="./index.html">
         <img src="/assets/coin.svg" width="30" height="30" alt="" loading="lazy">
         </a>
         <h5>Coin Master</h5>
@@ -87,6 +97,50 @@ $(document).ready(function(){
 
     <div id="info" class="alert alert-light" role="alert">
         Select the coins you would like to aggregate below...
+    </div>
+
+    <div style="position: relative;">
+        <div class="toast" id="toast-start" data-autohide="false" style="position: absolute; top: 0; right: 0; z-index:10;">
+            <div class="toast-header">
+            <img src="./assets/coin.svg" class="rounded mr-2" alt="coinmaster" style="width: 25px; height: 20px;">
+            <strong class="mr-auto">Minima</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="toast-body">
+            Mining started..
+            </div>
+        </div>
+    </div>
+    <div style="position: relative;">
+        <div class="toast" id="toast-stop" data-autohide="false" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+            <img src="./assets/coin.svg" class="rounded mr-2" alt="coinmaster" style="width: 25px; height: 20px;">
+            <strong class="mr-auto">Minima</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="toast-body">
+            Mining stopped..
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="txn-success">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">
+                        Transaction
+                    </h2>
+                    <button type="button" onclick="finish()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>Posted successfully!</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container pt-5">
@@ -117,14 +171,14 @@ $(document).ready(function(){
                 name="out-address" type="text" 
                 placeholder="output address..." 
                 class="form-control" aria-label="output address" 
-                aria-describedby="inputGroup-sizing-sm">
+                aria-describedby="inputGroup-sizing-sm" readonly>
 
                 <input id="output-1"
                 name="out-amount" type="number"
                 min="0" 
                 placeholder="output amount..." 
                 class="form-control" aria-label="output amount" 
-                aria-describedby="inputGroup-sizing-sm">
+                aria-describedby="inputGroup-sizing-sm" readonly>
                   
             </div>
 
@@ -135,6 +189,8 @@ $(document).ready(function(){
         
 
     </div>
+
+    
 
     <script>
         var btn = document.getElementById("aggrBtn");
@@ -171,13 +227,24 @@ $(document).ready(function(){
     
                 $('#jumbo h2').text("Your inputs");
     
-                $('#info').text("This is your aggregate transaction, enter your outputs and post when ready...");
+                $('#info').text("This is your aggregate transaction, post it to aggregate your coin(s)...");
     
                 $('#jumboOutputs').css('display', 'block');
     
                 $('#arrow').css('display', 'block');
                 
                 $('#postBtn').css('display', 'block');
+
+                Minima.cmd('newaddress', function(res){
+                   document.getElementById('output-0').value = res.response.address.miniaddress;
+                });
+
+                var total = 0;
+                temp.forEach(coin => {
+                    total = total + parseFloat(coin.amount);
+                    document.getElementById('output-1').value = total;
+                });
+
             } else {
                 
             }
@@ -189,7 +256,6 @@ $(document).ready(function(){
         var form = document.forms[0];
         var selectElement = form.querySelectorAll('input[name="out-address"]');
         
-        
         function createTxn() {
             // create random id
             var id = Math.floor(Math.random()*1000000000);
@@ -199,23 +265,24 @@ $(document).ready(function(){
             });
             //var output = "txnoutput "+id+" "+"5"+" "+"MxI35TSP3WDLSANNBJW4T7NBID4RDZHSAU"+" "+out.tokenid+" "+out.position+";";
             var tokenid = Minima.form.getParams("token");
-            var addr = selectElement.value;
-            console.log(addr);
+
+            var addr = document.getElementById('output-0').value;
+            var amnt = document.getElementById('output-1').value;
 
             var txn = "txncreate "+id+";"
                        +inputs+ // add inputs
-                       "txnoutput "+id+" "+"5"+" "+"MxX5KKBD6RIVXOI22WZFVUUKXZK46GKIJ7"+" "+tokenid+" "+"0"+";"+ // add output
+                       "txnoutput "+id+" "+amnt+" "+addr+" "+tokenid+" "+"0"+";"+ // add output
                        "txnsignauto "+id+";" // auto sign
                        +"txnpost "+id+";"+ // post it
                        "txndelete "+id; // delete it
 
             Minima.cmd(txn, function(res) {
                 console.log(res);
-                if(!res.status) {
+                if(!res[res.length-2].status) {
                     alert("Something went wrong..");
+                } else if(res[res.length-2].status) {
+                    $('#txn-success').modal({backdrop: false});
                 }
-                
-                //window.location.href = "./";
             });
             
 

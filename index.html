@@ -36,7 +36,7 @@
                 var total = res.response.balance.length;
                 if(total > 1) {
                     document.getElementById('token-amount').innerText = "You currently have "+total+" tokens.";
-                } else if(token == 1) {
+                } else if(total == 1) {
                     document.getElementById('token-amount').innerText = "You currently have "+total+" token.";
                 } else {
                     document.getElementById('token-amount').innerText = "Loading...";

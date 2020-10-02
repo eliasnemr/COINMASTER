@@ -69,10 +69,9 @@ form {
 .card-img-top {
     width: 90px;
     border-bottom: 2.5px solid rgb(129,190,251) !important;
-    
 }
 .card {
-    background-color: rgba(242, 242, 242, 1.0) !important;
+    background-color: rgba(142,190,240, 1.0) !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -88,6 +87,9 @@ form {
 .card-title {
     font-weight: 600;
     letter-spacing: -0.02em;
+}
+.card-body {
+    color: #f2f2f2;
 }
 .alert h2 {
     font-size: 1.2rem;

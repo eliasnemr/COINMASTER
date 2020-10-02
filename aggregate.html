@@ -10,11 +10,6 @@
     <title>COIN MASTER</title>
 </head>
 <body>
-<script>
-    function finish() {
-        window.location.href = "./";
-    }
-</script>
 <script id="templateCoins" type="text/x-jsrender">
     <div id="templCoins" class="list-group">
         {{for coins}}
@@ -51,14 +46,14 @@ $(document).ready(function(){
             coinArr = [];
         }
 
-        Minima.cmd("coins tokenid:"+tokenId, 
+        Minima.cmd("coinsimple "+tokenId, 
         function(res){
             
             res.response.coins.forEach(function(coin, i) {
                 
-                if(coin.data.coin.amount > 0) {
-
-                    coinArr.push({index: i, coinid: coin.data.coin.coinid, amount: coin.data.coin.amount});
+                if(coin.coin.amount > 0) {
+                    
+                    coinArr.push({index: i, coinid: coin.coin.coinid, amount: coin.coin.amount});
 
                 }
             });
@@ -86,8 +81,8 @@ $(document).ready(function(){
         }
     });
 });
-
 </script>
+
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="./index.html">
         <img src="./assets/coin.svg" width="30" height="30" alt="" loading="lazy">
@@ -127,21 +122,6 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-    <div class="modal" id="txn-success">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">
-                        Transaction
-                    </h2>
-                    <button type="button" onclick="finish()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <p>Posted successfully!</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container pt-5">
 
@@ -159,40 +139,46 @@ $(document).ready(function(){
             </svg>
         </div>
 
+        <form action="posted.html" method="POST" enctype="multipart/form-data">
         <div style="display:none;" id="jumboOutputs" class="jumbotron mt-2">
             <h2>Your output</h2>
-            <span class="input-group-text" id="basic-addon1">Output #0</span>
-            <div class="input-group input-group-sm mb-3">
-                
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">@</span>
+            
+                <span class="input-group-text" id="basic-addon1">Output #0</span>
+                <div class="input-group input-group-sm mb-3">
+                    
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">@</span>
+                    </div>
+                    <input 
+                    id="addr"
+                    name="addr"
+                    type="text" 
+                    class="form-control" aria-label="output address" 
+                    aria-describedby="inputGroup-sizing-sm" readonly>
+
+                    <input 
+                    id="amnt"
+                    name="amnt" 
+                    type="number"
+                    class="form-control" aria-label="output amount" 
+                    aria-describedby="inputGroup-sizing-sm" readonly>
+                    
                 </div>
-                <input id="output-0"
-                name="out-address" type="text" 
-                placeholder="output address..." 
-                class="form-control" aria-label="output address" 
-                aria-describedby="inputGroup-sizing-sm" readonly>
-
-                <input id="output-1"
-                name="out-amount" type="number"
-                min="0" 
-                placeholder="output amount..." 
-                class="form-control" aria-label="output amount" 
-                aria-describedby="inputGroup-sizing-sm" readonly>
-                  
-            </div>
-
         </div>
-
-        <button id="postBtn" onclick="createTxn()" style="display: none;" type="submit" class="btn btn-primary btn-block">Post</button>
-
-        
+        <div class="row">
+            <div class="col">
+                <!-- <button id="postBtn" onclick="createTxn()" style="display: none;" type="submit" class="btn btn-primary btn-block">Post</button> -->
+                <button id="postBtn" style="display: none;" type="submit" class="btn btn-primary btn-block">Post</button>
+            </div>
+        </div>
+        </form>
 
     </div>
 
     
 
     <script>
+
         var btn = document.getElementById("aggrBtn");
         var templInputs = $.templates('#templateInputs');
         var atleast = 0;
@@ -236,13 +222,13 @@ $(document).ready(function(){
                 $('#postBtn').css('display', 'block');
 
                 Minima.cmd('newaddress', function(res){
-                   document.getElementById('output-0').value = res.response.address.miniaddress;
+                   document.getElementById('addr').value = res.response.address.miniaddress;
                 });
 
                 var total = 0;
                 temp.forEach(coin => {
                     total = total + parseFloat(coin.amount);
-                    document.getElementById('output-1').value = total;
+                    document.getElementById('amnt').value = total;
                 });
 
             } else {
@@ -251,6 +237,37 @@ $(document).ready(function(){
         });   
     </script>
     <script>
+
+        async function postTransaction(address, amount, tokenid, coinid) {
+            // id
+            const id = Math.floor(Math.random()*1000000000);
+            const txn = {
+                id: id,
+                output: {
+                    address: address,
+                    amount: amount,
+                    tokenid: tokenid
+                },
+                inputs: {
+                    coinid: coinid,
+                }
+            };
+
+
+        }
+        var form = document.forms[0];
+        form.addEventListener('submit', event => {
+
+            event.preventDefault();
+            const addr = event.currentTarget.querySelector('#addr').value;
+            const amnt = event.currentTarget.querySelector('#amnt').value;
+            const tokenid = Minima.form.getParams('token');
+            
+            postTransaction(addr, amnt, tokenid, temp);
+
+
+        });
+
         var inp = coinArr;
 
         var form = document.forms[0];
@@ -278,18 +295,12 @@ $(document).ready(function(){
 
             Minima.cmd(txn, function(res) {
                 console.log(res);
-                if(!res[res.length-2].status) {
-                    alert("Something went wrong..");
-                } else if(res[res.length-2].status) {
-                    $('#txn-success').modal({backdrop: false});
+
+                if(Minima.util.checkAllResponses(res)) {
+                    $('#txn-success').modal({backdrop:false});
                 }
             });
-            
-
-
-
         }
-
     </script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

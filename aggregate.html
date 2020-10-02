@@ -139,6 +139,7 @@ $(document).ready(function(){
             </svg>
         </div>
 
+    <section id="postForm"> 
         <form action="posted.html" method="POST" enctype="multipart/form-data">
         <div style="display:none;" id="jumboOutputs" class="jumbotron mt-2">
             <h2>Your output</h2>
@@ -172,6 +173,7 @@ $(document).ready(function(){
             </div>
         </div>
         </form>
+    </section>
 
     </div>
 
@@ -237,8 +239,10 @@ $(document).ready(function(){
         });   
     </script>
     <script>
+        
 
         async function postTransaction(address, amount, tokenid, coinid) {
+            console.log("posting...");
             // id
             const id = Math.floor(Math.random()*1000000000);
             const txn = {
@@ -253,15 +257,37 @@ $(document).ready(function(){
                 }
             };
 
+            const xhr = new XMLHttpRequest();
+            var urlEncodedData = encodeURIComponent(JSON.stringify(txn));
+            // Define what happens on successful data submission
+            xhr.addEventListener( 'load', function(event) {
+                alert( 'Yeah! Data sent and response loaded.' );
+            } );
+
+            // Define what happens in case of error
+            xhr.addEventListener( 'error', function(event) {
+                alert( 'Oops! Something went wrong.' );
+            } );
+
+            // Set up our request
+            xhr.open( 'POST', Minima.webhost+"posted.html/params" );
+
+            // Add the required HTTP header for form data POST requests
+            xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+
+            // Finally, send our data.
+            xhr.send( urlEncodedData );
 
         }
-        var form = document.forms[0];
-        form.addEventListener('submit', event => {
+        var form = document.querySelector('#postForm form');
 
+        form.addEventListener('submit', event => {
+            console.log("Submitted!");
             event.preventDefault();
             const addr = event.currentTarget.querySelector('#addr').value;
             const amnt = event.currentTarget.querySelector('#amnt').value;
             const tokenid = Minima.form.getParams('token');
+            const temp = coinArr;
             
             postTransaction(addr, amnt, tokenid, temp);
 

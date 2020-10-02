@@ -81,8 +81,8 @@ form {
     font-weight: 300;
     opacity: 0.5;
 }
-.input-group-text {
-    background-color: rgb(252,252,216) !important;
+.input-group-text {97, 106, 107
+    background-color: rgba(97,106,107, 0.8) !important;
 }
 .card-title {
     font-weight: 600;
@@ -107,4 +107,9 @@ form {
 }
 .modal {
     background: rgba(242,242,242, 0.6);
+}
+.btn-success {
+    background-color: rgba(88, 214, 141, 0.8) !important;
+    font-weight: 800;
+    opacity: 0.8;
 }

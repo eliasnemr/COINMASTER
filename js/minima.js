@@ -66,7 +66,7 @@ var Minima = {
 	wshost : "ws://127.0.0.1:9003",
 	
 	//Show RPC commands
-	logging : true,
+	logging : false,
 	
 	//Are we in DEBUG mode - if so don't touch the host settings..
 	debug : true,

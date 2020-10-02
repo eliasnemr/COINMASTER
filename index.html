@@ -68,48 +68,51 @@
         function getToken(id) {
             window.location.href="./aggregate.html?token="+id;
         }
+
         var tmpl = $.templates('#templateTokens');
         var tokens = [];
-
         // get tokens of user
-        function setBalance(tmpl, tokens) {
+        async function setBalance(tmpl, tokens) {
+            var tokens;
+            return new Promise((resolve, reject) => {
 
-            $(document).ready(function(){
                 if($('#templTokens').length > 0){
                     $('#templTokens').remove();
                     tokens = [];
                 }
-            });
 
-            Minima.cmd("balance", function(res){
-                res.response.balance.forEach(function(tkn){
-                    
-                    tokens
-                        .push({
-                            coinid: tkn.coinid,
-                            confirmed: tkn.confirmed,
-                            description: tkn.description,
-                            icon: tkn.icon,
-                            mempool: tkn.mempool,
-                            proof: tkn.proof,
-                            scale: tkn.scale,
-                            script: tkn.script,
-                            sendable: tkn.sendable,
-                            token: tkn.token,
-                            tokenid: tkn.tokenid,
-                            total: tkn.total,
-                            totalamount: tkn.totalamount,
-                            unconfirmed: tkn.unconfirmed
-                        });
+                Minima.cmd("balance", function(res){
+                    res.response.balance.forEach(function(tkn){
+                        
+                        tokens
+                            .push({
+                                coinid: tkn.coinid,
+                                confirmed: tkn.confirmed,
+                                description: tkn.description,
+                                icon: tkn.icon,
+                                mempool: tkn.mempool,
+                                proof: tkn.proof,
+                                scale: tkn.scale,
+                                script: tkn.script,
+                                sendable: tkn.sendable,
+                                token: tkn.token,
+                                tokenid: tkn.tokenid,
+                                total: tkn.total,
+                                totalamount: tkn.totalamount,
+                                unconfirmed: tkn.unconfirmed
+                            });
+                        
+                        resolve(tokens);
+                    });
                 });
 
-                var html = tmpl.render({tokens: tokens});
+                }).then(tokens => {
+                    var html = tmpl.render({tokens: tokens});
 
-                $('#jumbo h2').after(html);
-
-            });
+                    $('#jumbo h2').after(html);
+                });
         }
-        window.addEventListener("load", function(res){
+        $(document).ready(function(){
             Minima.init(function(msg) {
                 if(msg.event == 'connected'){
                     setBalance(tmpl, tokens); // get tokens of user
@@ -126,7 +129,7 @@
                     $.snack("info", "Mining starting..", "4000");
                 }
             });
-    });
+        });
     </script>
 
     <nav class="navbar navbar-light bg-light">

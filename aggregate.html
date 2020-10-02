@@ -107,7 +107,7 @@ $(document).ready(function(){
     </nav>
 
     <div id="info" class="alert alert-light" role="alert">
-        Select the coins you would like to aggregate below...
+        Here are your coin(s)...
     </div>
 
 
@@ -284,8 +284,15 @@ $(document).ready(function(){
                         total = total + parseFloat(coin.amount);
                         document.getElementById('amnt').value = total;
                     });
-                    } else if (atleast == 0) {
-                        return;
+                    } else {
+                        $('#info').text("You must select a coin first...");
+                        $('#info').css('background-color', "rgba(244,67,53, 0.7)");
+                        $('#info').css('color:', 'white');
+
+                        setTimeout(function() {
+                            $('#info').text("Here are your coin(s)...");
+                            $('#info').css('background-color', "rgb(254,254,254)");
+                        }, 2000);
                     }   
             });
             
@@ -351,7 +358,16 @@ $(document).ready(function(){
                     $('#postBtn').css('display', 'block');
 
                     } else if (atleast == 0) {
-                        return;
+                    
+                        $('#info').text("You must select a coin first...");
+                        $('#info').css('background-color', "rgba(244,67,53, 0.7)");
+                        $('#info').css('color:', 'white');
+
+                        setTimeout(function() {
+                            $('#info').text("Here are your coin(s)...");
+                            $('#info').css('background-color', "rgb(254,254,254)");
+                        }, 2000);
+                        
                     }   
             });
             

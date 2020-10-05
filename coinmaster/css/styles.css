@@ -1,0 +1,115 @@
+body {
+    background-color: rgba(242, 242, 242, 1.0) !important;
+}
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: auto;
+    white-space: normal;
+    margin-top: auto;
+    margin-bottom: auto;
+    transition: transform .2s;
+    margin-bottom: 5px;
+    background: rgba(194,189,189, 0.2);
+    border: 2.5px solid rgb(191,218,246) !important;
+
+}
+.box h5 {
+    font-size: 0.8rem;
+    letter-spacing: -0.02em;
+    word-break: break-all;
+}
+.box img {
+    max-width: 25px;
+}
+.jumbotron {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.jumbotron h2 {
+    letter-spacing: -0.02em;
+    font-size: 1.7rem;
+    color: rgba(242, 242, 242, 0.7) !important;
+
+}
+.box:hover {
+    cursor: pointer;
+    background-color: rgba(77, 166, 255, 0.4) !important;
+
+    transform: scale(1.1);
+}
+.list-group-item {
+    white-space: normal;
+    word-break: break-all;
+}
+.tokens {
+    display: flex;
+    flex-wrap: wrap;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+.navbar h5 {
+    opacity: 0.4;
+    letter-spacing: -0.02em;
+    font-size: 1.5rem;
+}
+.jumbotron {
+    background-color: rgba(77, 166, 255, 0.7) !important;
+}
+.navbar {
+    background-color: rgba(77, 166, 255, 0.7) !important;
+}
+
+.card-img-top {
+    width: 90px;
+    border-bottom: 2.5px solid rgb(129,190,251) !important;
+}
+.card {
+    background-color: rgba(142,190,240, 1.0) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.card-text {
+    font-weight: 300;
+    opacity: 0.5;
+}
+.input-group-text {97, 106, 107
+    background-color: rgba(97,106,107, 0.8) !important;
+}
+.card-title {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+.card-body {
+    color: #f2f2f2;
+}
+.alert h2 {
+    font-size: 1.2rem;
+}
+.modal-header {
+    background-color: rgba(242, 242, 242, 1.0) !important;
+}
+.modal-header h2 {
+    font-size: 1.1rem;
+}
+.modal-body {
+    font-size: 0.9rem !important;
+    background-color: rgba(242, 242, 242, 0.8) !important;
+
+}
+.modal {
+    background: rgba(242,242,242, 0.6);
+}
+.btn-success {
+    background-color: rgba(88, 214, 141, 0.8) !important;
+    font-weight: 800;
+    opacity: 0.8;
+}

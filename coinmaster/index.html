@@ -12,22 +12,54 @@
 </head>
 <body>
     <script id="templateTokens" type="text/x-jsrender">
-    <div id="templTokens" class="tokens"> 
-        <div class="row">
-            {{for tokens}}
-            <div class="col">
-                <div onclick="getToken('{{:tokenid}}')" class="box border rounded-lg">
-                    {{if icon}}
-                    <img src="{{:icon}}" class="img-fluid">
-                    {{else}}
-                    <img src="assets/icon.png" class="img-fluid">
-                    {{/if}}
-                    <h5>{{:token}}</h5>
-                </div>
-            </div>
-            {{/for}}
+        <div id="templTokens">
+            <ul class="list-group-item">
+                {{for tokens}}
+                <li class="list-group-item token">
+                    <div class="row">
+                        <div class="col-2">
+                            {{if icon}}
+                            {{:icon}}
+                            <img src="{{:icon}}" class="img-fluid icon">
+                            {{else}}
+                            <img src="assets/icon.png" class="img-fluid icon">
+                            {{/if}}
+                        </div>
+                        <div class="col-sm">
+                            {{:token}}
+                        </div>
+                        <div class="col-2">
+                            {{:confirmed}}
+                        </div>
+                    </div>
+                </li>
+                {{/for}}
+            </ul>
+            
+        
         </div>
-    </div>
+
+    <!-- <div id="templTokens" class="tokens"> 
+        <div class="row">
+            <ul class="list-group ">
+                {{for tokens}}
+                <li class="list-group-item">
+                    <div class="col">
+                        {{if icon}}
+                        <img src="{{:icon}}" class="img-fluid icon">
+                        {{else}}
+                        <img src="assets/icon.png" class="img-fluid icon">
+                        {{/if}}
+                    </div>
+                    <div class="col">
+                        <h5>{{:token}}</h5>
+                    </div>
+                </li>
+            </ul>
+            {{/for}}
+           
+        </div>
+    </div> -->
     </script>
 
     <script>
@@ -83,6 +115,9 @@
 
                 Minima.cmd("balance", function(res){
                     res.response.balance.forEach(function(tkn){
+                        Minima.cmd("coinsimple "+tkn.tokenid, function(resp){
+                            console.log(resp.response.coins.length);
+                            var coins = resp.response.coins.length;
                         
                         tokens
                             .push({
@@ -99,10 +134,13 @@
                                 tokenid: tkn.tokenid,
                                 total: tkn.total,
                                 totalamount: tkn.totalamount,
-                                unconfirmed: tkn.unconfirmed
+                                unconfirmed: tkn.unconfirmed,
+                                coinsAmnt: coins
                             });
                         
                         resolve(tokens);
+                    });
+                        
                     });
                 });
 

@@ -1,21 +1,23 @@
 body {
     background-color: rgba(242, 242, 242, 1.0) !important;
 }
-.box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: auto;
+.token {
+    color: #e2e2e2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     white-space: normal;
-    margin-top: auto;
-    margin-bottom: auto;
     transition: transform .2s;
-    margin-bottom: 5px;
-    background: rgba(194,189,189, 0.2);
+    background: rgba(191,218,246, 0.3);
     border: 2.5px solid rgb(191,218,246) !important;
+}
+.token:hover {
+    background: red;
+    background: rgba(191,218,246, 0.6);
+    transform: scale(1.01);
 
+}
+.list-group-item {
+    background: rgba(191,218,246, 0.3);
 }
 .box h5 {
     font-size: 0.8rem;
@@ -46,10 +48,7 @@ body {
     white-space: normal;
     word-break: break-all;
 }
-.tokens {
-    display: flex;
-    flex-wrap: wrap;
-}
+
 form {
     display: flex;
     flex-direction: column;
@@ -81,7 +80,7 @@ form {
     font-weight: 300;
     opacity: 0.5;
 }
-.input-group-text {97, 106, 107
+.input-group-text {
     background-color: rgba(97,106,107, 0.8) !important;
 }
 .card-title {
@@ -112,4 +111,7 @@ form {
     background-color: rgba(88, 214, 141, 0.8) !important;
     font-weight: 800;
     opacity: 0.8;
+}
+.icon {
+    max-width: 30px;
 }

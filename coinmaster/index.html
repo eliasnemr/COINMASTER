@@ -16,8 +16,8 @@
             <ul class="list-group-item">
                 {{for tokens}}
                 <li class="list-group-item token">
-                    <div class="row">
-                        <div class="col-2">
+                    <div class="row h-100" onclick='getToken("{{:tokenid}}")'>
+                        <div class="col-2 my-auto">
                             {{if icon}}
                             {{:icon}}
                             <img src="{{:icon}}" class="img-fluid icon">
@@ -25,11 +25,18 @@
                             <img src="assets/icon.png" class="img-fluid icon">
                             {{/if}}
                         </div>
-                        <div class="col-sm">
+                        <div class="col-md-5 my-auto name">
                             {{:token}}
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-3 my-auto conf">
                             {{:confirmed}}
+                        </div>
+                        <div class="col-md-2 my-auto coin">
+                            {{if coin>1}}
+                            {{:coin + " coins"}}
+                            {{else}} 
+                            {{:coin + " coin"}}
+                            {{/if}}
                         </div>
                     </div>
                 </li>
@@ -39,27 +46,6 @@
         
         </div>
 
-    <!-- <div id="templTokens" class="tokens"> 
-        <div class="row">
-            <ul class="list-group ">
-                {{for tokens}}
-                <li class="list-group-item">
-                    <div class="col">
-                        {{if icon}}
-                        <img src="{{:icon}}" class="img-fluid icon">
-                        {{else}}
-                        <img src="assets/icon.png" class="img-fluid icon">
-                        {{/if}}
-                    </div>
-                    <div class="col">
-                        <h5>{{:token}}</h5>
-                    </div>
-                </li>
-            </ul>
-            {{/for}}
-           
-        </div>
-    </div> -->
     </script>
 
     <script>
@@ -92,7 +78,6 @@
                     }
                 });
 
-                document.getElementById('token-total').innerText = "Your custom tokens all add up to "+totalT +" tokens.";
                 document.getElementById('minima-total').innerText = "There is a cap of "+totalMini +" MINI tokens and you own "+yourMini+" MINI.";
 
             });
@@ -106,7 +91,8 @@
         // get tokens of user
         async function setBalance(tmpl, tokens) {
             var tokens;
-            return new Promise((resolve, reject) => {
+            var coin;
+            await new Promise((resolve, reject) => {
 
                 if($('#templTokens').length > 0){
                     $('#templTokens').remove();
@@ -115,11 +101,20 @@
 
                 Minima.cmd("balance", function(res){
                     res.response.balance.forEach(function(tkn){
-                        Minima.cmd("coinsimple "+tkn.tokenid, function(resp){
-                            console.log(resp.response.coins.length);
-                            var coins = resp.response.coins.length;
-                        
-                        tokens
+
+                        new Promise((resolve, reject) => {
+                            
+                            // return amnt of coins
+                            Minima.cmd("coinsimple "+tkn.tokenid, function(resp){ 
+                                coin = resp.response.coins.length;
+                                resolve(coin);
+
+                            });
+
+
+                        }).then(res => {
+                            
+                            tokens
                             .push({
                                 coinid: tkn.coinid,
                                 confirmed: tkn.confirmed,
@@ -135,19 +130,20 @@
                                 total: tkn.total,
                                 totalamount: tkn.totalamount,
                                 unconfirmed: tkn.unconfirmed,
-                                coinsAmnt: coins
+                                coin: res
                             });
-                        
+                        });
+                    });
+                    setTimeout(()=> {
                         resolve(tokens);
-                    });
-                        
-                    });
+                    }, 100);
                 });
 
                 }).then(tokens => {
+                    
                     var html = tmpl.render({tokens: tokens});
-
                     $('#jumbo h2').after(html);
+                
                 });
         }
         $(document).ready(function(){
@@ -208,13 +204,7 @@
                       <p class="card-text" id="minima-total"></p>
                     </div>
                   </div>
-                  <div class="card" style="width: 18rem;">
-                    <img src="./assets/balance.svg" class="card-img-top" alt="balance">
-                    <div class="card-body">
-                      <h5 class="card-title">Token Total</h5>
-                      <p class="card-text" id="token-total"></p>
-                    </div>
-                  </div>
+                  
             
             </div>
 

@@ -9,12 +9,21 @@ body {
     transition: transform .2s;
     background: rgba(191,218,246, 0.3);
     border: 2.5px solid rgb(191,218,246) !important;
+    cursor: pointer;
 }
-.token:hover {
-    background: red;
+.coinWrap {
+    color: #e2e2e2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: normal;
+    transition: transform .2s;
+    background: rgba(191,218,246, 0.3);
+    border: 2.5px solid rgb(191,218,246) !important;
+    cursor: default;
+}
+.token:hover, .coinWrap:hover {
     background: rgba(191,218,246, 0.6);
     transform: scale(1.01);
-
 }
 .list-group-item {
     background: rgba(191,218,246, 0.3);
@@ -36,6 +45,7 @@ body {
     letter-spacing: -0.02em;
     font-size: 1.7rem;
     color: rgba(242, 242, 242, 0.7) !important;
+    cursor: default;
 
 }
 .box:hover {
@@ -61,13 +71,19 @@ form {
 .jumbotron {
     background-color: rgba(77, 166, 255, 0.7) !important;
 }
+.jumbotron h3 {
+    opacity: 0.7;
+    font-weight: 400;
+    font-size: 1.1rem;
+}
 .navbar {
     background-color: rgba(77, 166, 255, 0.7) !important;
 }
 
 .card-img-top {
     width: 90px;
-    border-bottom: 2.5px solid rgb(129,190,251) !important;
+    margin-top: 1.5em;
+    border-bottom: 2.5px solid rgba(22, 107, 79, 0.6) !important;
 }
 .card {
     background-color: rgba(142,190,240, 1.0) !important;
@@ -114,4 +130,26 @@ form {
 }
 .icon {
     max-width: 30px;
+}
+.conf {
+    font-weight: 600;
+}
+.coin {
+    font-weight: 500;
+    color: rgba(229,157,30, 0.8);
+    background-color: rgba(129,190,251, 0.2);
+    
+}
+.name {
+    background-color: rgba(129,190,251, 0.2);
+}
+.coinid {
+    color: rgba(108,125,138, 0.6);
+}
+.index {
+    color: rgba(209,226,245);
+}
+.tokenTitle {
+    background-color: rgba(102, 153, 153, 0.6) !important;
+    margin-bottom: 0;
 }

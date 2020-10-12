@@ -117,11 +117,7 @@
                 if(msg.event == "miningstart") {
                     $('.toast').toast('show');
                     console.log("mining...");
-                } else if(msg.event == "miningstop") {
-                    $.snack("info", "Mining stopping..", "4000");
-                } else if(msg.event == 'miningstart') {
-                    $.snack("info", "Mining starting..", "4000");
-                }
+                } 
             });
         });
     </script>

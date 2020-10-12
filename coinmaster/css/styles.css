@@ -189,3 +189,9 @@ form {
 #aggrBtn:hover {
     opacity: 0.9;
 }
+#outIndex {
+    color: rgb(100,180,180) !important;
+}
+#inputAmount {
+    color: rgb(100,180,180) !important;
+}

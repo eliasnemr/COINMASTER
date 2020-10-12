@@ -87,7 +87,7 @@
             <div class="col-lg-9 my-auto coinid">
                 {{:coinid}}
             </div>
-            <div name="inp-amount{{:index}}" class="col-md-3 my-auto">
+            <div name="inp-amount{{:index}}" id="inputAmount" class="col-md-3 my-auto">
                 {{:amount}}
             </div>
         </div>
@@ -377,7 +377,7 @@ $(document).ready(function(){
         <div style="display:none;" id="jumboManage" class="jumbotron mt-2">
             <h2>Your output</h2>
             
-                <span class="input-group-text" id="basic-addon1">Output #0</span>
+                <span class="input-group-text" id="outIndex">Output #0</span>
                 <div class="input-group input-group-sm mb-3">
                     
                     <div class="input-group-prepend">

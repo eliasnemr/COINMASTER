@@ -709,9 +709,17 @@ $(document).ready(function(){
                 Minima.file.save(TXN, "txn.txt", function(res){
                     if(res.success){
                         window.location.href = "./posted.html";
+                    } else {
+                        $('#info').text("Something's wrong with your txn and can't be posted!");
+                        $('#info').css('background-color', "rgba(244,67,53, 0.7)");
+                        $('#info').css('color:', 'white');
+    
+                        setTimeout(function(){
+                            $('#info').text("Let's try again.. post when ready!");
+                            $('#info').css('background-color', "rgb(254,254,254)");
+                        }, 2000);
                     }
-                });
-             
+                }); 
             });
         }
 

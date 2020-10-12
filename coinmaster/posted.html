@@ -84,7 +84,7 @@
             </div>
             <div id="message" style="display:none;" class="row">
                 <div class="col" style="text-align: center;">
-                    <h2>Your transaction was posted successfully!</h2>
+                    <h2 id="status"></h2>
                 </div>
             </div>
             <div id="backBtn" style="display:none;" class="row">
@@ -98,26 +98,39 @@
     </div>
 
     <script>
+
+        
         $(document).ready(function(){
-            setTimeout(function(){
-                $('#message').css("display", "block");
-                $('#backBtn').css("display", "block");
-                $('#spinner').css("display", "none");    
-            }, 2000);
 
             var backBtn =document.getElementById('backBtn');
             backBtn.addEventListener("click", function(){
                 window.location.href="./";
             });
-
-        });
-        
-        $(document).ready(function(){
+            
             Minima.init(function(msg){
-                if(msg.event == "miningstart") {
-                    $('.toast').toast('show');
-                    console.log("mining...");
-                } 
+                if(msg.event == "connected") {
+
+                    setTimeout(function(){
+                        $('#message').css("display", "block");
+                        $('#backBtn').css("display", "block");
+                        $('#spinner').css("display", "none");    
+                    }, 2000);
+        
+                    Minima.file.load("/txn.txt", function(res){
+                        if(res.success){
+                            
+                            var TXN = res.data;
+        
+                            Minima.cmd(TXN, function(res) {
+                                if(Minima.util.checkAllResponses(res)) {
+                                    $("#status").text("Your transaction was posted successfully!");
+                                } else {
+                                    $("#status").text("Your transaction failed.  Please try again!");
+                                }
+                            });  
+                        }
+                    });
+                }
             });
         });
     </script>

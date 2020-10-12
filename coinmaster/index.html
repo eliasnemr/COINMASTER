@@ -70,7 +70,7 @@
 
                 res.response.balance.forEach(tkn => {
                     var txt = $('#minima-total');
-                    if(tkn.tokenid = "0x00") {
+                    if(tkn.tokenid == "0x00") {
                         
                         txt.text("There is a network cap of "+tkn.total+" and you own "+tkn.confirmed+".");
 

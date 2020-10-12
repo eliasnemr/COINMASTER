@@ -82,18 +82,22 @@
         }
         var tmpl = $.templates('#templateTokens');
         var tokens = [];
+        var tokenIDS = [];
+        var lastCheckTokens = "";
         // get tokens of user
         async function setBalance(tmpl, tokens) {
-            var tokens;
-            var coin;
-            await new Promise((resolve, reject) => {
-                
-                if(("#templCoins").length > 0) {
-    
-                    $("#templCoins").remove();
-                    
-                }
+            var tokens = [];
+            var coin = [];
+           
 
+            await new Promise((resolve, reject) => {
+
+                if($("#templTokens").length > 0) {
+                        
+                    $("#templTokens").remove();
+                    
+                } 
+                
                 Minima.cmd("balance", function(res){
                     res.response.balance.forEach(function(tkn){
 
@@ -140,34 +144,41 @@
                     }, 100);
                 });
 
+
+
                 }).then(tokens => {
                     
+
                     var html = tmpl.render({tokens: tokens});
                     $('#jumbo h2').after(html);
                     
                 });
         }
+        
         function updateBalance() {
             Minima.cmd("balance", function(res){
                 res.response.balance.forEach(token => {
                     
                     var id = document.getElementById("conf"+token.tokenid);
-                    id.innerText = token.confirmed;
+                    if(id && id.value != token.tokenid){
+                        id.innerText = token.confirmed;
 
-
-                    Minima.cmd("coinsimple "+token.tokenid, function(res){
-                        
-                        var c = document.getElementById("coin"+token.tokenid);
-                        if(res.response.coins.length > 1) {
-                            c.innerText = res.response.coins.length + " coins";
-                        } else if(res.response.coins.length == 1) {
-                            c.innerText = res.response.coins.length + " coin"; 
-                        } else {
-                            c.innerText = "No coins"
-                        }
-                        
-                        
-                    });
+                        Minima.cmd("coinsimple "+token.tokenid, function(res){
+                            
+                            var c = document.getElementById("coin"+token.tokenid);
+                            if(res.response.coins.length > 1) {
+                                c.innerText = res.response.coins.length + " coins";
+                            } else if(res.response.coins.length == 1) {
+                                c.innerText = res.response.coins.length + " coin"; 
+                            } else {
+                                c.innerText = "No coins"
+                            }
+                            
+                            
+                        });
+                    } else {
+                        setBalance(tmpl, tokens);
+                    }
 
                 });
 
@@ -176,9 +187,11 @@
 
             
         }
+        
         $(document).ready(function(){
             Minima.init(function(msg) {
                 if(msg.event == 'connected'){
+                    
                     setBalance(tmpl, tokens); // get tokens of user
                     setTokenAmount();
                     setMinima();

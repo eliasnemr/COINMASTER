@@ -65,7 +65,21 @@
         function getToken(id) {
             window.location.href="./aggregate.html?token="+id;
         }
+        function setMinima() {
+            Minima.cmd('balance', function(res){
 
+                res.response.balance.forEach(tkn => {
+                    var txt = $('#minima-total');
+                    if(tkn.tokenid = "0x00") {
+                        
+                        txt.text("There is a network cap of "+tkn.total+" and you own "+tkn.confirmed+".");
+
+                    }
+                    
+                });
+
+            });
+        }
         var tmpl = $.templates('#templateTokens');
         var tokens = [];
         // get tokens of user
@@ -167,10 +181,12 @@
                 if(msg.event == 'connected'){
                     setBalance(tmpl, tokens); // get tokens of user
                     setTokenAmount();
+                    setMinima();
                 } else if(msg.event == 'newbalance') {
                      
                     setTokenAmount();
                     updateBalance();
+                    setMinima();
 
                 } else if(msg.event == "miningstop") {
                     //$.snack("info", "Mining stopping..", "4000");

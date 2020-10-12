@@ -69,10 +69,10 @@ var Minima = {
 	logging : false,
 	
 	//Are we in DEBUG mode - if so don't touch the host settings..
-	debug : false,
+	debug : true,
 	
 	//Show mining messages - can be dealt with by the MiniDAPP
-	showmining : false,
+	showmining : true,
 	
 	/**
 	 * Minima Startup - with the callback function used for all Minima messages

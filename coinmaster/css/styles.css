@@ -8,7 +8,7 @@ body {
     white-space: normal;
     transition: transform .2s;
     background: rgba(191,218,246, 0.3);
-    border: 2.5px solid rgb(191,218,246) !important;
+    border: 2.5px solid #bfdaf6 !important;
     cursor: pointer;
 }
 .coinWrap {
@@ -131,17 +131,22 @@ form {
 .icon {
     max-width: 30px;
 }
+.icon-a {
+    max-width:30px;
+}
 .conf {
     font-weight: 600;
 }
 .coin {
     font-weight: 500;
     color: rgba(229,157,30, 0.8);
-    background-color: rgba(129,190,251, 0.2);
+    background: rgb(154,202,248);
+    background: linear-gradient(90deg, rgba(154,202,248,1) 0%, rgba(154,202,248,1) 50%, rgba(139,182,227,1) 97%, rgba(154,202,248,1) 100%);
     
 }
 .name {
-    background-color: rgba(129,190,251, 0.2);
+    background: rgb(154,202,248);
+    background: linear-gradient(90deg, rgba(154,202,248,1) 0%, rgba(154,202,248,1) 50%, rgba(139,182,227,1) 97%, rgba(154,202,248,1) 100%);
 }
 .coinid {
     color: rgba(108,125,138, 0.6);
@@ -152,4 +157,27 @@ form {
 .tokenTitle {
     background-color: rgba(102, 153, 153, 0.6) !important;
     margin-bottom: 0;
+}
+.tokenCard {
+    border-bottom: solid 2.5px rgb(210,227,245) !important;
+    max-width: 60px;
+}
+.tokenName {
+    color: rgb(210,227,245);
+    letter-spacing: 0.01em;
+}
+.tokenContainer {
+    background-color: rgba(0, 153, 153, 0.7) !important;
+}
+
+.input-group-text {
+    background-color: rgba(242,242,242, 0.4) !important;
+}
+.input-group:hover {
+    cursor: pointer;
+    background: rgba(191,218,246, 0.6);
+    transform: scale(1.01);
+}
+.form-control:hover {
+    cursor:pointer;
 }

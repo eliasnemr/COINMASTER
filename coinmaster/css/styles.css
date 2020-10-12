@@ -152,7 +152,8 @@ form {
     color: rgba(108,125,138, 0.6);
 }
 .index {
-    color: rgba(209,226,245);
+    color: rgb(100,180,180);
+    font-weight: 500;
 }
 .tokenTitle {
     background-color: rgba(102, 153, 153, 0.6) !important;
